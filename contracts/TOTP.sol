@@ -12,6 +12,8 @@ contract TOTP {
     uint256 constant Digits = 6;
     uint256 constant Modulus = 10 ** Digits;
 
+    mapping (address => string[]) public userDomains;
+
     constructor() {
         seed = bytes32(Sapphire.randomBytes(32, ""));
     }
@@ -32,6 +34,7 @@ contract TOTP {
 
     function joinDomainGroup(string memory _domain, address _sender) external {
         // Implement your logic here
+        userDomains[_sender].push(_domain);
     }
 
     function verify(
@@ -58,5 +61,9 @@ contract TOTP {
         uint256 _data
     ) public pure returns (bytes memory _hmac) {
         return abi.encodePacked(keccak256(abi.encodePacked(_secret, _data)));
+    }
+
+    function getDomains(address _sender) public view returns (string[] memory) {
+        return userDomains[_sender];
     }
 }

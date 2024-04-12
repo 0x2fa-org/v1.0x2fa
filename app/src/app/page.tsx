@@ -7,7 +7,6 @@ import Wrapper from "@/components/custom/wrapper"
 import useConnectWallet from "@/hooks/useConnectWallet"
 import useGenerateTOTP from "@/hooks/useGenerateTOPT"
 import useView from "@/hooks/useView"
-import { extractDomainName, truncateAddress } from "@/utils/format"
 import { NextPage } from "next"
 import { Key, useState } from "react"
 
@@ -18,8 +17,6 @@ const Root: NextPage = () => {
   const { data: domains } = useView("getDomains", [address])
   const { data: generatedTOTP } = useGenerateTOTP(domains, address)
 
-  console.log({ domains, generatedTOTP })
-
   return (
     <Wrapper className="p-8 max-w-md mx-auto">
       <Header address={address} connect={connect} />
@@ -27,7 +24,8 @@ const Root: NextPage = () => {
         {address &&
           domains &&
           generatedTOTP?.map((domain: any, index: Key) => {
-            const domainName = domains[index as number]
+            const domainName =
+              index < domains.length ? domains[index as number] : undefined
             return domainName ? (
               <TOTPCard
                 key={index}

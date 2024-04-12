@@ -1,0 +1,9 @@
+interface ITOTP {
+  function generate(string memory _domain, address _sender) external;
+  function createDomainGroup(string memory _domain) external;
+  function joinDomainGroup(address _sender) external;
+  function verify(string memory _domain, address _sender, uint256 _code) external;
+  function getCurrentTimeStep() public view returns (uint256);
+  function deriveSecret(string memory _domain, address _sender) external view returns (bytes32);
+  function calculateHMAC(bytes32 _secretKey, uint256 _data) external view returns (bytes32);
+}

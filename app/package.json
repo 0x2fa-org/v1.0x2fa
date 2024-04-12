@@ -31,6 +31,7 @@
     "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-qr-code": "^2.0.12",
     "react-qr-reader": "2.2.1",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.2.2",

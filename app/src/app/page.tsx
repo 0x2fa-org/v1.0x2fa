@@ -12,11 +12,13 @@ import { NextPage } from "next"
 import { Key, useState } from "react"
 
 const Root: NextPage = () => {
-  const [qrcodeResult, setQrcodeResult] = useState('')
+  const [qrcodeResult, setQrcodeResult] = useState("")
 
   const { address, connect } = useConnectWallet()
-  const { data: domains } = useView('getDomains', [address])
+  const { data: domains } = useView("getDomains", [address])
   const { data: generatedTOTP } = useGenerateTOTP(domains, address)
+
+  console.log({ domains, generatedTOTP })
 
   return (
     <Wrapper className="p-8 max-w-md mx-auto">
@@ -24,17 +26,18 @@ const Root: NextPage = () => {
       <Wrapper>
         {address &&
           domains &&
-          generatedTOTP?.map((domain: any, index: Key) => (
-            <TOTPCard
-              key={index}
-              title={extractDomainName(domains[index as number])}
-              avatarUrl={`https://logo.clearbit.com/${
-                domains[index as number]
-              }`}
-              address={truncateAddress(address)}
-              value={domain}
-            />
-          ))}
+          generatedTOTP?.map((domain: any, index: Key) => {
+            const domainName = domains[index as number]
+            return domainName ? (
+              <TOTPCard
+                key={index}
+                title={domainName}
+                avatarUrl={`https://logo.clearbit.com/${domainName}`}
+                address={address}
+                value={domain}
+              />
+            ) : null
+          })}
       </Wrapper>
       {address && <ScanDropdown setQrcodeResult={setQrcodeResult} />}
     </Wrapper>

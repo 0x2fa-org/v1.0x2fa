@@ -33,8 +33,18 @@ contract TOTP {
     }
 
     function joinDomainGroup(string memory _domain, address _sender) external {
-        // Implement your logic here
         userDomains[_sender].push(_domain);
+    }
+
+    function leaveDomainGroup(string memory _domain, address _sender) external {
+        string[] storage domains = userDomains[_sender];
+        for (uint256 i = 0; i < domains.length; i++) {
+            if (keccak256(abi.encodePacked(domains[i])) == keccak256(abi.encodePacked(_domain))) {
+                domains[i] = domains[domains.length - 1];
+                domains.pop();
+                break;
+            }
+        }
     }
 
     function verify(

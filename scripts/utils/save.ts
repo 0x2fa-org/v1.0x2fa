@@ -26,7 +26,7 @@ export const save = async (chainId: number, address: string, abi: Abi) => {
       interface Artifact {
         [key: string]: {
           address: \`0x\${string}\`;
-          abi: Abi;
+          abi: InterfaceAbi;
         };
       }
       \n\n

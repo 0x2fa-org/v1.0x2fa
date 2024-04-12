@@ -9,7 +9,7 @@ interface Artifact {
 
 export const Contracts: Artifact = {
   31337: {
-    address: "0x959922be3caee4b8cd9a407cc3ac1c251c2007b1",
+    address: "0x322813fd9a801c5507c9de605d63cea4f2ce6c44",
     abi: [
       {
         inputs: [],
@@ -123,6 +123,24 @@ export const Contracts: Artifact = {
           },
         ],
         name: "joinDomainGroup",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "string",
+            name: "_domain",
+            type: "string",
+          },
+          {
+            internalType: "address",
+            name: "_sender",
+            type: "address",
+          },
+        ],
+        name: "leaveDomainGroup",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",

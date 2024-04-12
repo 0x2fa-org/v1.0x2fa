@@ -9,7 +9,8 @@ const useGenerateTOTP = (
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!domains || !address) return setData(undefined)
+      if (!domains || !address || domains.length <= 0) return setData(undefined)
+      
 
       const contract = await getContract()
 

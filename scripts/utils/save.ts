@@ -1,26 +1,27 @@
-import fs from 'fs'
-import path from 'path'
-import prettier from 'prettier'
-import { Abi } from 'viem'
+import fs from "fs";
+import path from "path";
+import prettier from "prettier";
+import { Abi } from "viem";
 
 export const save = async (chainId: number, address: string, abi: Abi) => {
   const contractsDir = path.join(
     __dirname,
-    '..',
-    '..',
-    '..',
-    'web',
-    'src',
-    'constants',
-    'deployedContracts.ts'
-  )
+    "..",
+    "..",
+    "app",
+    "src",
+    "constants"
+  );
 
-  if (!fs.existsSync(contractsDir)) fs.mkdirSync(contractsDir)
+  const filePath = path.join(contractsDir, "deployedContracts.ts");
+
+  if (!fs.existsSync(contractsDir))
+    fs.mkdirSync(contractsDir);
 
   fs.writeFileSync(
-    path.join(contractsDir),
+    filePath,
     await prettier.format(
-      `import { Abi } from "viem";
+      `import { InterfaceAbi } from "ethers";
       \n\n
       interface Artifact {
         [key: string]: {
@@ -36,10 +37,10 @@ export const save = async (chainId: number, address: string, abi: Abi) => {
         }
       }`,
       {
-        parser: 'typescript',
+        parser: "typescript",
       }
     )
-  )
+  );
 
-  console.log(`💾 Contract artifact has been saved to ${contractsDir}`)
-}
+  console.log(`💾 Contract artifact has been saved to ${filePath}`);
+};

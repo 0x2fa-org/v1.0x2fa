@@ -1,5 +1,4 @@
-import { CONTRACT_ABI, CONTRACT_ADDRESS } from '@/constants'
-import { ethers } from 'ethers'
+import { getContract } from '@/utils/provider'
 import { useEffect, useState } from 'react'
 
 const useView = (functionName: string, args: any[]) => {
@@ -8,13 +7,7 @@ const useView = (functionName: string, args: any[]) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const provider = new ethers.BrowserProvider(window.ethereum)
-
-        const contract = new ethers.Contract(
-          CONTRACT_ADDRESS,
-          CONTRACT_ABI,
-          provider
-        )
+        const contract = await getContract()
 
         const result = await contract[functionName](...args)
 

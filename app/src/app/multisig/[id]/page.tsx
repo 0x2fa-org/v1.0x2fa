@@ -18,6 +18,7 @@ const MultisigId = ({ params }: { params: { id: string } }) => {
   const { address, connect } = useConnectWallet()
   const { id } = params
 
+
   return (
     <Wrapper className="flex flex-col items-center w-full">
       <Wrapper className="p-8 max-w-5xl mx-auto justify-between w-full">

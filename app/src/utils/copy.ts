@@ -1,12 +1,12 @@
 import { toast } from 'sonner'
 
-export const copy = (value: string) => {
+export const copy = (value: string, description = 'The OTP code has been copied to your clipboard. It will be cleared in 30 seconds.') => {
   if (navigator.clipboard) {
     navigator.clipboard
       .writeText(value)
       .then(() => {
         toast.success('✨ Copy Successful ✨', {
-          description: `The OTP code has been copied to your clipboard. It will be cleared in 30 seconds.`,
+          description,
         })
       })
       .catch((err) => {

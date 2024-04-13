@@ -27,15 +27,11 @@ const Wallet: FC = () => {
   const [accountBalance, setAccountBalance] = useState("")
   const [derivedPath, setDerivedPath] = useState("")
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const [to, setTo] = useState("")
   const [value, setValue] = useState("")
   const [data, setData] = useState("")
-
-  // const transact = async () => {
-  //   console.log("Transacting...")
-  //   console.log("Chain:", selectedChain)
-  //   console.log("Action:", selectedAction)
-  // }
 
   const { account, isLoading: isNearLoading } = useInitNear()
 
@@ -43,13 +39,16 @@ const Wallet: FC = () => {
   const bsc = useMemo(() => new EVM(chainsConfig.bsc), [])
 
   const canTransact = useMemo(() => {
-    if (!account || !derivedAddress || !selectedAction) return false
+    if (!account || !derivedAddress || !selectedAction || isLoading)
+      return false
     if (selectedAction.startsWith("send_") && (!to || !value)) return false
     return true
   }, [account, derivedAddress, selectedAction, to, value])
 
   const transact = async () => {
     try {
+      setIsLoading(true)
+
       if (!account) return console.error("Account not found")
 
       const sendData = {
@@ -59,20 +58,19 @@ const Wallet: FC = () => {
       }
 
       const mintData = getMintData(selectedChain, derivedAddress)
-      console.log({mintData})
 
       switch (selectedChain) {
-        case 'bsc':
+        case "bsc":
           await bsc.handleTransaction(
-            selectedAction === 'mint' ? mintData : sendData,
+            selectedAction === "mint" ? mintData : sendData,
             account,
             derivedPath,
             MPC_PUBLIC_KEY
           )
           break
-        case 'eth':
+        case "eth":
           await ethereum.handleTransaction(
-            selectedAction === 'mint' ? mintData : sendData,
+            selectedAction === "mint" ? mintData : sendData,
             account,
             derivedPath,
             MPC_PUBLIC_KEY
@@ -83,6 +81,8 @@ const Wallet: FC = () => {
       }
     } catch (e) {
       console.error(e)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -217,6 +217,11 @@ const Wallet: FC = () => {
       )}
       {selectedAction && (
         <Button className="w-full" onClick={transact} disabled={!canTransact}>
+          {isLoading && <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>}
+
           {selectedAction === "mint" ? "Mint" : "Send"}
         </Button>
       )}

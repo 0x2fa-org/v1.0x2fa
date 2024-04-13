@@ -21,6 +21,7 @@ import React from "react"
 import Scan from "@/components/custom/multisig/scan"
 import { Invite } from "@/types/bandada"
 import { useRouter } from "next/navigation"
+import Manage from "@/components/custom/multisig/manage"
 
 const CreateMultisig: FC = () => {
   const path = ["Create", "Scan", "Manage"]
@@ -63,6 +64,9 @@ const CreateMultisig: FC = () => {
       )
 
       if (inv.isRedeemed) {
+        setCurrentPath("Manage")
+        // wait 5 seconds before redirecting
+        await new Promise((resolve) => setTimeout(resolve, 5000))
         clearInterval(interval)
         router.push(`/multisig/${invite.group.id}`)
       }
@@ -94,8 +98,16 @@ const CreateMultisig: FC = () => {
       </Breadcrumb>
       {currentPath === "Create" ? (
         <Create handleSubmit={handleCreate} />
+      ) : currentPath === "Scan" ? (
+        <Scan
+          code={
+            invite
+              ? `${invite.code}-${invite.group.id}-https://safe.global/${invite.group.id}`
+              : ""
+          }
+        />
       ) : (
-        <Scan code={invite ? `${invite.code}-${invite.group.id}-https://safe.global/${invite.group.id}` : ""} />
+        <Manage />
       )}
     </Wrapper>
   )

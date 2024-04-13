@@ -29,7 +29,7 @@ const Create: FC<Props> = ({ handleSubmit }) => {
   const [advancedMode, setAdvancedMode] = useState(false)
 
   return (
-    <Card className="w-md">
+    <Card className="w-96">
       <CardHeader>
         <CardTitle>Create an Multisig</CardTitle>
         <CardDescription>

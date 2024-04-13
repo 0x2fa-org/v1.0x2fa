@@ -14,7 +14,7 @@ interface Props {
 
 const Scan: FC<Props> = ({ code }) => {
   return (
-    <Card className="w-md">
+    <Card className="w-96">
       <CardHeader>
         <CardTitle>Scan invite code</CardTitle>
         <CardDescription>

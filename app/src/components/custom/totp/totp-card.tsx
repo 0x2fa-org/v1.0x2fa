@@ -13,11 +13,12 @@ import { toast } from 'sonner'
 interface Props {
   title: string
   avatarUrl: string
-  address: string
+  description: string
+  walletAddress: string
   value: string
 }
 
-const TOTPCard: FC<Props> = ({ title, avatarUrl, address, value }) => {
+const TOTPCard: FC<Props> = ({ title, avatarUrl, description, walletAddress , value }) => {
   const [progress, setProgress] = useState(100)
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const TOTPCard: FC<Props> = ({ title, avatarUrl, address, value }) => {
 
   const deleteGroup = async () => {
     const contract = await getGaslessContract()
-    await contract.leaveDomainGroup(title, address).then(() => {
+    await contract.leaveDomainGroup(title, walletAddress).then(() => {
       toast.success('✨ Domain has been deleted successfully! ✨')
     })
   }
@@ -55,7 +56,7 @@ const TOTPCard: FC<Props> = ({ title, avatarUrl, address, value }) => {
                 {extractDomainName(title)}
               </p>
               <p className="text-xs opacity-60 font-normal">
-                {truncateAddress(address)}
+                {truncateAddress(description)}
               </p>
             </div>
           </div>

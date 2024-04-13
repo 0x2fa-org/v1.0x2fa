@@ -48,7 +48,7 @@ const Wallet: FC<Props> = ({ address, groupId }) => {
 
   const [derivedAddress, setDerivedAddress] = useState("")
   const [accountBalance, setAccountBalance] = useState("")
-  const [derivedPath, setDerivedPath] = useState("")
+  const [derivedPath] = useState(address)
 
   const [isLoading, setIsLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -114,14 +114,18 @@ const Wallet: FC<Props> = ({ address, groupId }) => {
   const confirmTransaction = async () => {
     const contract = await getContract()
 
-    const transaction = await contract.verify(`${SAFE_GLOBAL_DOMAIN}/${groupId}`, address, BigInt(otp))
+    const transaction = await contract.verify(
+      `${SAFE_GLOBAL_DOMAIN}/${groupId}`,
+      address,
+      BigInt(otp)
+    )
 
     if (transaction) {
-      toast.success('✨ OTP verified successfully, sending transaction... ✨')
+      toast.success("✨ OTP verified successfully, sending transaction... ✨")
       setIsOpen(false)
       transact()
     } else {
-      toast.error('OTP verification failed, please try again.')
+      toast.error("OTP verification failed, please try again.")
     }
     setOtp("")
   }
@@ -214,6 +218,9 @@ const Wallet: FC<Props> = ({ address, groupId }) => {
               <SelectGroup>
                 <SelectItem value="eth">tETH</SelectItem>
                 <SelectItem value="bsc">tBSC</SelectItem>
+                <SelectItem value="matic">tMATIC</SelectItem>
+                <SelectItem value="sol">tSOL</SelectItem>
+                <SelectItem value="arb">tARB</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -260,35 +267,37 @@ const Wallet: FC<Props> = ({ address, groupId }) => {
       {selectedAction && (
         <Dialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
           <DialogTrigger
-            className={cn("w-full bg-primary h-9 text-primary-foreground rounded-md flex items-center gap-2 justify-center", {['opacity-50']: isLoading})}
+            className={cn(
+              "w-full bg-primary h-9 text-primary-foreground rounded-md flex items-center gap-2 justify-center",
+              { ["opacity-50"]: isLoading }
+            )}
             disabled={!canTransact}
           >
-            
             {isLoading && (
               <svg
-              className="animate-spin -ml-1 mr-3 h-4 w-4 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
+                className="animate-spin -ml-1 mr-3 h-4 w-4 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
               >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
                 ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
-          )}
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            )}
             {selectedAction === "mint" ? "Mint" : "Send"}
           </DialogTrigger>
-          
+
           <DialogContent className="w-96 rounded-md">
             <DialogHeader className="text-start">
               <DialogTitle>Verify</DialogTitle>
@@ -309,7 +318,9 @@ const Wallet: FC<Props> = ({ address, groupId }) => {
               </InputOTP>
             </DialogDescription>
             <DialogFooter>
-              <Button className="w-full" onClick={confirmTransaction}>Confirm Transaction</Button>
+              <Button className="w-full" onClick={confirmTransaction}>
+                Confirm Transaction
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

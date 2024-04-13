@@ -58,11 +58,12 @@ const Root: NextPage = () => {
                 key={index}
                 title={domainName}
                 avatarUrl={`https://logo.clearbit.com/${extractDomain(domainName)}`}
-                address={
+                description={
                   domainName.startsWith(SAFE_GLOBAL_DOMAIN)
                     ? domainName.replace(`${SAFE_GLOBAL_DOMAIN}/`, "")
                     : address
                 }
+                walletAddress={address}
                 value={code.toString().padStart(6, "0")}
               />
             ) : null

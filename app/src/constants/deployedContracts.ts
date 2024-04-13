@@ -9,7 +9,7 @@ interface Artifact {
 
 export const Contracts: Artifact = {
   23295: {
-    address: "0xa3Fea399160ad54B2aaaC277Cf65Eb3a673e84f5",
+    address: "0x3E295f4BB935f9A9384D85421F4fe33A2cA8f645",
     abi: [
       {
         inputs: [],
@@ -33,8 +33,32 @@ export const Contracts: Artifact = {
         outputs: [
           {
             internalType: "uint256",
-            name: "",
+            name: "_code",
             type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "_sender",
+            type: "address",
+          },
+        ],
+        name: "generateAll",
+        outputs: [
+          {
+            internalType: "uint256[]",
+            name: "_codes",
+            type: "uint256[]",
+          },
+          {
+            internalType: "string[]",
+            name: "_domains",
+            type: "string[]",
           },
         ],
         stateMutability: "view",

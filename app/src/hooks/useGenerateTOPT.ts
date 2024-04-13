@@ -1,31 +1,30 @@
 import { getContract } from "@/utils/provider"
 import { useEffect, useState } from "react"
 
-const useGenerateTOTP = (
-  domains: string[] | undefined,
-  address: string | undefined
-) => {
+const useGenerateTOTP = (address: string | undefined) => {
   const [data, setData] = useState<any>(undefined)
-  const contract = getContract()
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout
+
     const fetchData = async () => {
-      if (!domains || !address || domains.length <= 0) return setData(undefined)
-      
+      if (!address) return setData(undefined)
 
-      const promises = (domains || []).map(async (domain) =>
-        (await contract)
-          .generate(domain, address)
-          .then((result) => result.toString().padStart(6, "0"))
-      )
+      const contract = await getContract()
 
-      const results = await Promise.all(promises)
+      const data = await contract.generateAll(address)
 
-      setData(results)
+      setData(data)
+
+      if (data !== undefined) {
+        timeoutId = setTimeout(fetchData, 2000)
+      }
     }
 
     fetchData()
-  }, [address, domains])
+
+    return () => timeoutId && clearTimeout(timeoutId)
+  }, [address]) // Remove data from the dependency array
 
   return { data }
 }

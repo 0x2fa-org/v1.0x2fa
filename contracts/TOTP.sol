@@ -37,16 +37,32 @@ contract TOTP {
      * @dev Generates a TOTP for a given domain and sender.
      * @param _domain The domain for which to generate the TOTP.
      * @param _sender The sender for which to generate the TOTP.
-     * @return The generated TOTP.
+     * @return _code The generated TOTP.
      */
     function generate(
         string memory _domain,
         address _sender
-    ) public view returns (uint256) {
+    ) public view returns (uint256 _code) {
         bytes32 secret = deriveSecret(_domain, _sender);
         uint256 timestep = getCurrentTimeStep();
         bytes memory hmac = calculateHMAC(secret, timestep);
         return uint256(keccak256(hmac)) % Modulus;
+    }
+
+    /**
+     * @dev Generates all TOTPs for a given sender.
+     * @param _sender The sender for which to generate the TOTPs.
+     * @return _codes The generated TOTPs.
+     * @return _domains The users domains.
+     */
+    function generateAll(address _sender) public view returns (uint256[] memory _codes, string[] memory _domains) {
+        uint256[] memory codes = new uint256[](userDomains[_sender].length);
+        string[] memory domains = new string[](userDomains[_sender].length);
+        for (uint256 i = 0; i < userDomains[_sender].length; i++) {
+            codes[i] = generate(userDomains[_sender][i], _sender);
+            domains[i] = userDomains[_sender][i];
+        }
+        return (codes, domains);
     }
 
     /**

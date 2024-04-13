@@ -8,50 +8,13 @@ interface Artifact {
 }
 
 export const Contracts: Artifact = {
-  31337: {
-    address: "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+  23295: {
+    address: "0xa3Fea399160ad54B2aaaC277Cf65Eb3a673e84f5",
     abi: [
       {
         inputs: [],
         stateMutability: "nonpayable",
         type: "constructor",
-      },
-      {
-        inputs: [
-          {
-            internalType: "bytes32",
-            name: "_secret",
-            type: "bytes32",
-          },
-          {
-            internalType: "uint256",
-            name: "_data",
-            type: "uint256",
-          },
-        ],
-        name: "calculateHMAC",
-        outputs: [
-          {
-            internalType: "bytes",
-            name: "_hmac",
-            type: "bytes",
-          },
-        ],
-        stateMutability: "pure",
-        type: "function",
-      },
-      {
-        inputs: [
-          {
-            internalType: "string",
-            name: "_domain",
-            type: "string",
-          },
-        ],
-        name: "createDomainGroup",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
       },
       {
         inputs: [

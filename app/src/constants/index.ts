@@ -1,4 +1,4 @@
-export const CHAIN_ID = 31337
+export const CHAIN_ID = 23295
 export const SIWE_MESSAGE =
   'I give permission to Detheticator to perform transactions on my behalf.'
 export const SAFE_GLOBAL_DOMAIN = "https://safe.global"
@@ -11,6 +11,7 @@ export const MPC_PUBLIC_KEY =
 
 export const chainsConfig = {
 ethereum: {
+  // This is not mine :p
   providerUrl:
     "https://sepolia.infura.io/v3/6df51ccaa17f4e078325b5050da5a2dd",
   scanUrl: "https://sepolia.etherscan.io",

@@ -1,6 +1,7 @@
 import { ethers } from "ethers"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
+import { wrap } from "@oasisprotocol/sapphire-paratime"
 
 const useConnectWallet = () => {
   const [address, setAddress] = useState<string | undefined>(undefined)
@@ -15,7 +16,9 @@ const useConnectWallet = () => {
     if (address) return setAddress(undefined)
 
     const provider = new ethers.BrowserProvider(window.ethereum)
-    const signer = await provider.getSigner()
+    // const signer = await provider.getSigner()
+    const signer = wrap(await provider.getSigner())
+
     const addr = await signer.getAddress()
     setAddress(addr)
   }

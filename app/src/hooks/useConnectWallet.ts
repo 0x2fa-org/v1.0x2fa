@@ -1,9 +1,14 @@
 import { ethers } from "ethers"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "sonner"
 
 const useConnectWallet = () => {
   const [address, setAddress] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    if (window.ethereum.selectedAddress)
+      setAddress(window.ethereum.selectedAddress)
+  }, [])
 
   const connect = async () => {
     if (!window.ethereum) return toast.error("No Ethereum provider found")

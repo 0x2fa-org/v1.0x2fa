@@ -15,20 +15,20 @@ import useConnectWallet from "@/hooks/useConnectWallet"
 
 // 96306055979140481719850626644037
 const MultisigId = ({ params }: { params: { id: string } }) => {
-  const { address, connect } = useConnectWallet()
+  const { address } = useConnectWallet()
   const { id } = params
 
   return (
     <Wrapper className="flex flex-col items-center w-full">
       <Wrapper className="p-8 max-w-5xl mx-auto justify-between w-full">
-        <Header address={address} connect={connect} />
+        <Header address={address} />
       </Wrapper>
       <Card className="w-96">
         <CardHeader>
           <CardTitle>Multisig Wallet</CardTitle>
           <CardDescription className="text-gray-400">ID: {id}</CardDescription>
         </CardHeader>
-        <CardContent>{address ? <Wallet address={address} groupId={id} /> : <Button className="w-full" onClick={connect}>Connect</Button>}</CardContent>
+        <CardContent>{address ? <Wallet address={address} groupId={id} /> : null}</CardContent>
       </Card>
     </Wrapper>
   )

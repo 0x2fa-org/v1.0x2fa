@@ -4,7 +4,7 @@ import { Button } from "../ui/button"
 
 interface Props {
   address: string | undefined
-  connect: () => void
+  connect?: () => void
 }
 
 const Header: FC<Props> = ({ address, connect }) => {
@@ -14,9 +14,9 @@ const Header: FC<Props> = ({ address, connect }) => {
         De
         <span className="font-normal">thenticator</span>
       </h1>
-      <Button onClick={connect}>
+      {connect && <Button onClick={connect}>
         {address ? truncateAddress(address) : "Connect"}
-      </Button>
+      </Button>}
     </div>
   )
 }

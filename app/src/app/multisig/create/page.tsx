@@ -29,7 +29,7 @@ const CreateMultisig: FC = () => {
   const [currentPath, setCurrentPath] = useState("Create")
   const [invite, setInvite] = useState<Invite>()
 
-  const { address, connect } = useConnectWallet()
+  const { address } = useConnectWallet()
   const router = useRouter()
 
   const handleCreate = async (groupCreateDetails: {
@@ -77,7 +77,7 @@ const CreateMultisig: FC = () => {
   return (
     <Wrapper className="flex flex-col items-center w-full">
       <Wrapper className="p-8 max-w-5xl mx-auto justify-between w-full">
-        <Header address={address} connect={connect} />
+        <Header address={address} />
       </Wrapper>
       <Breadcrumb>
         <BreadcrumbList>

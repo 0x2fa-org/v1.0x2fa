@@ -11,7 +11,9 @@ import { NextPage } from "next"
 import { Key, useEffect, useState } from "react"
 // @ts-ignore
 import { ApiSdk } from "@bandada/api-sdk"
-import { env } from "@/env.mjs"
+import { getContract, getSigner } from "@/utils/provider"
+import { SIWE_MESSAGE } from "@/constants"
+import { extractDomain } from "@/utils/format"
 
 const Root: NextPage = () => {
   const [qrcodeResult, setQrcodeResult] = useState("")
@@ -23,13 +25,21 @@ const Root: NextPage = () => {
   useEffect(() => {
     ;(async () => {
       if (!qrcodeResult) return
+      const signer = await getSigner()
+
+      const deterministicMemberId = await signer.signMessage(SIWE_MESSAGE)
+
       const apiSdk = new ApiSdk()
 
-      const groupId = qrcodeResult.split(":")[0]
-      const inviteCode = qrcodeResult.split(":")[1]
-      const memberId = address
+      const groupId = qrcodeResult.split("-")[0]
+      const inviteCode = qrcodeResult.split("-")[1]
 
-      await apiSdk.addMemberByInviteCode(inviteCode, memberId, groupId)
+      await apiSdk.addMemberByInviteCode(inviteCode, deterministicMemberId, groupId)
+    
+      // join group
+      const domain = qrcodeResult.split("-")[2]
+      const contract = await getContract()
+      await contract.joinDomainGroup(domain, address)
     })()
   }, [qrcodeResult])
 
@@ -46,7 +56,7 @@ const Root: NextPage = () => {
               <TOTPCard
                 key={index}
                 title={domainName}
-                avatarUrl={`https://logo.clearbit.com/${domainName}`}
+                avatarUrl={`https://logo.clearbit.com/${extractDomain(domainName)}`}
                 address={address}
                 value={domain}
               />

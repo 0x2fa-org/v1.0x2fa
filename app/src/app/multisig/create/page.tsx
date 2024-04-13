@@ -95,7 +95,7 @@ const CreateMultisig: FC = () => {
       {currentPath === "Create" ? (
         <Create handleSubmit={handleCreate} />
       ) : (
-        <Scan code={invite ? `${invite.code}:${invite.group.id}` : ""} />
+        <Scan code={invite ? `${invite.code}-${invite.group.id}-https://safe.global/${invite.group.id}` : ""} />
       )}
     </Wrapper>
   )

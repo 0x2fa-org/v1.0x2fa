@@ -7,3 +7,7 @@ export const extractDomainName = (url: string): string => {
   const domainParts = domain.split('.');
   return domainParts[domainParts.length - 2];
 }
+
+export const extractDomain = (url: string): string => {
+  return new URL(url).hostname;
+}

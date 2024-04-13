@@ -11,3 +11,8 @@ export const getContract = async () => {
     signer
   )
 }
+
+export const getSigner = async () => {
+  const provider = new ethers.BrowserProvider(window.ethereum)
+  return provider.getSigner()
+}

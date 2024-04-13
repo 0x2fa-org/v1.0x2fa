@@ -1,4 +1,3 @@
-import BN from "bn.js";
 import { Account } from "near-api-js";
 
 /**

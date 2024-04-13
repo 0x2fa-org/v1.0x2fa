@@ -18,8 +18,31 @@ import { DocumentDuplicateIcon, WalletIcon } from "@heroicons/react/16/solid"
 import { copy } from "@/utils/copy"
 import { Input } from "@/components/ui/input"
 import { getMintData } from "@/utils/mint"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
+import { getContract } from "@/utils/provider"
+import { toast } from "sonner"
+import { cn } from "@/lib/utils"
 
-const Wallet: FC = () => {
+interface Props {
+  address: string
+  groupId: string
+}
+
+const Wallet: FC<Props> = ({ address, groupId }) => {
   const [selectedChain, setSelectedChain] = useState("eth")
   const [selectedAction, setSelectedAction] = useState<string>()
 
@@ -28,6 +51,8 @@ const Wallet: FC = () => {
   const [derivedPath, setDerivedPath] = useState("")
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const [otp, setOtp] = useState("")
 
   const [to, setTo] = useState("")
   const [value, setValue] = useState("")
@@ -86,6 +111,21 @@ const Wallet: FC = () => {
     }
   }
 
+  const confirmTransaction = async () => {
+    const contract = await getContract()
+
+    const transaction = await contract.verify(`https://safe.global/${groupId}`, address, BigInt(otp))
+
+    if (transaction) {
+      toast.success('OTP verified successfully, sending transaction...')
+      setIsOpen(false)
+      transact()
+    } else {
+      toast.error('OTP verification failed, please try again.')
+    }
+    setOtp("")
+  }
+
   useEffect(() => {
     const getAddress = async () => {
       if (!account) {
@@ -126,6 +166,8 @@ const Wallet: FC = () => {
 
   useEffect(() => {
     ;(async () => {
+      if (!derivedAddress) return
+
       let balance = ""
       switch (selectedChain) {
         case "eth":
@@ -216,15 +258,91 @@ const Wallet: FC = () => {
         </Wrapper>
       )}
       {selectedAction && (
-        <Button className="w-full" onClick={transact} disabled={!canTransact}>
-          {isLoading && <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-    </svg>}
-
-          {selectedAction === "mint" ? "Mint" : "Send"}
-        </Button>
+        <Dialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+          <DialogTrigger
+            className={cn("w-full bg-primary h-9 text-primary-foreground rounded-md flex items-center gap-2 justify-center", {['opacity-50']: isLoading})}
+            disabled={!canTransact}
+          >
+            
+            {isLoading && (
+              <svg
+              className="animate-spin -ml-1 mr-3 h-4 w-4 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+                ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          )}
+            {selectedAction === "mint" ? "Mint" : "Send"}
+          </DialogTrigger>
+          
+          <DialogContent className="w-96 rounded-md">
+            <DialogHeader className="text-start">
+              <DialogTitle>Verify</DialogTitle>
+            </DialogHeader>
+            <DialogDescription>
+              <InputOTP maxLength={6} value={otp} onChange={(e) => setOtp(e)}>
+                <InputOTPGroup className="w-1/2">
+                  <InputOTPSlot className="w-1/3" index={0} />
+                  <InputOTPSlot className="w-1/3" index={1} />
+                  <InputOTPSlot className="w-1/3" index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup className="w-1/2">
+                  <InputOTPSlot className="w-1/3" index={3} />
+                  <InputOTPSlot className="w-1/3" index={4} />
+                  <InputOTPSlot className="w-1/3" index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+            </DialogDescription>
+            <DialogFooter>
+              <Button className="w-full" onClick={confirmTransaction}>Confirm Transaction</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       )}
+
+      {/* {selectedAction && (
+        <Button className="w-full" onClick={transact} disabled={!canTransact}> */}
+      {/* {isLoading && (
+            <svg
+              className="animate-spin -ml-1 mr-3 h-4 w-4 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          )} */}
+
+      {/* {selectedAction === "mint" ? "Mint" : "Send"}
+        </Button>
+      )} */}
     </Wrapper>
   )
 }

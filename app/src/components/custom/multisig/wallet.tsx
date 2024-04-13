@@ -12,7 +12,7 @@ import Wrapper from "../wrapper"
 import { Button } from "@/components/ui/button"
 import EVM from "@/utils/chain/EVM"
 import useInitNear from "@/hooks/useInitNear"
-import { MPC_PUBLIC_KEY, chainsConfig } from "@/constants"
+import { MPC_PUBLIC_KEY, SAFE_GLOBAL_DOMAIN, chainsConfig } from "@/constants"
 import { truncateAddress } from "@/utils/format"
 import { DocumentDuplicateIcon, WalletIcon } from "@heroicons/react/16/solid"
 import { copy } from "@/utils/copy"
@@ -114,7 +114,7 @@ const Wallet: FC<Props> = ({ address, groupId }) => {
   const confirmTransaction = async () => {
     const contract = await getContract()
 
-    const transaction = await contract.verify(`https://safe.global/${groupId}`, address, BigInt(otp))
+    const transaction = await contract.verify(`${SAFE_GLOBAL_DOMAIN}/${groupId}`, address, BigInt(otp))
 
     if (transaction) {
       toast.success('OTP verified successfully, sending transaction...')

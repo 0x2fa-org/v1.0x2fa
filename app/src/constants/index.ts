@@ -1,6 +1,7 @@
 export const CHAIN_ID = 31337
 export const SIWE_MESSAGE =
   'I give permission to Detheticator to perform transactions on my behalf.'
+export const SAFE_GLOBAL_DOMAIN = "https://safe.global"
 
 export const SEPOLIA_MINT_ADDRESS = "0xa3fea399160ad54b2aaac277cf65eb3a673e84f5"
 

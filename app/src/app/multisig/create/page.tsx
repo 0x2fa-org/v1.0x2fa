@@ -22,6 +22,7 @@ import Scan from "@/components/custom/multisig/scan"
 import { Invite } from "@/types/bandada"
 import { useRouter } from "next/navigation"
 import Manage from "@/components/custom/multisig/manage"
+import { SAFE_GLOBAL_DOMAIN } from "@/constants"
 
 const CreateMultisig: FC = () => {
   const path = ["Create", "Scan", "Manage"]
@@ -102,7 +103,7 @@ const CreateMultisig: FC = () => {
         <Scan
           code={
             invite
-              ? `${invite.code}-${invite.group.id}-https://safe.global/${invite.group.id}`
+              ? `${invite.code}-${invite.group.id}-${SAFE_GLOBAL_DOMAIN}/${invite.group.id}`
               : ""
           }
         />

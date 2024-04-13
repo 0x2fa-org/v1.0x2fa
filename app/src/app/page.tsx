@@ -12,7 +12,7 @@ import { Key, useEffect, useState } from "react"
 // @ts-ignore
 import { ApiSdk } from "@bandada/api-sdk"
 import { getContract, getSigner } from "@/utils/provider"
-import { SIWE_MESSAGE } from "@/constants"
+import { SAFE_GLOBAL_DOMAIN, SIWE_MESSAGE } from "@/constants"
 import { extractDomain } from "@/utils/format"
 
 const Root: NextPage = () => {
@@ -57,7 +57,7 @@ const Root: NextPage = () => {
                 key={index}
                 title={domainName}
                 avatarUrl={`https://logo.clearbit.com/${extractDomain(domainName)}`}
-                address={address}
+                address={domainName.startsWith(SAFE_GLOBAL_DOMAIN) ? domainName.replace(`${SAFE_GLOBAL_DOMAIN}/`, '') : address}
                 value={domain}
               />
             ) : null

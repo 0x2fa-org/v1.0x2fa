@@ -6,16 +6,15 @@ const useGenerateTOTP = (
   address: string | undefined
 ) => {
   const [data, setData] = useState<any>(undefined)
+  const contract = getContract()
 
   useEffect(() => {
     const fetchData = async () => {
       if (!domains || !address || domains.length <= 0) return setData(undefined)
       
 
-      const contract = await getContract()
-
-      const promises = (domains || []).map((domain) =>
-        contract
+      const promises = (domains || []).map(async (domain) =>
+        (await contract)
           .generate(domain, address)
           .then((result) => result.toString().padStart(6, "0"))
       )

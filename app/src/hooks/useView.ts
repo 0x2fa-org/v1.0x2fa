@@ -3,13 +3,12 @@ import { useEffect, useState } from 'react'
 
 const useView = (functionName: string, args: any[]) => {
   const [data, setData] = useState<any>(undefined)
+  const contract = getContract()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const contract = await getContract()
-
-        const result = await contract[functionName](...args)
+        const result = await (await contract)[functionName](...args)
 
         setData(result)
       } catch (error) {

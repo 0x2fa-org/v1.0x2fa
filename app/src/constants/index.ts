@@ -4,6 +4,7 @@ export const SIWE_MESSAGE =
 export const SAFE_GLOBAL_DOMAIN = "https://safe.global"
 
 export const SEPOLIA_MINT_ADDRESS = "0xa3fea399160ad54b2aaac277cf65eb3a673e84f5"
+export const BSC_TESTNET_MINT_ADDRESS = "0x376a73fb318c8c282e0281d41c75ad3375cc2654"
 
 export const MPC_PUBLIC_KEY =
 "secp256k1:4HFcTSodRLVCGNVcGc4Mf2fwBBBxv9jxkGdiW2S2CA1y6UpVVRWKj6RX7d7TDt65k2Bj3w9FU4BGtt43ZvuhCnNt";

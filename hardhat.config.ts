@@ -22,6 +22,10 @@ const config: HardhatUserConfig = {
       url: process.env.MUMBAI_RPC_URL || "https://rpc.ankr.com/polygon_mumbai",
       accounts,
     },
+    'bsc-testnet': {
+      url: process.env.BSC_TESTNET_RPC_URL || "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+      accounts,
+    },
     sapphire: {
       url: process.env.SAPPHIRE_RPC_URL || "https://sapphire.oasis.io",
       chainId: 0x5afe,

@@ -117,7 +117,7 @@ const Wallet: FC<Props> = ({ address, groupId }) => {
     const transaction = await contract.verify(`${SAFE_GLOBAL_DOMAIN}/${groupId}`, address, BigInt(otp))
 
     if (transaction) {
-      toast.success('OTP verified successfully, sending transaction...')
+      toast.success('✨ OTP verified successfully, sending transaction... ✨')
       setIsOpen(false)
       transact()
     } else {

@@ -37,7 +37,7 @@ const TOTPCard: FC<Props> = ({ title, avatarUrl, address, value }) => {
   const deleteGroup = async () => {
     const contract = await getContract()
     await contract.leaveDomainGroup(title, address).then(() => {
-      toast.success('Domain has been deleted successfully!')
+      toast.success('✨ Domain has been deleted successfully! ✨')
     })
   }
 

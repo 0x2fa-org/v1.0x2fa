@@ -221,14 +221,15 @@ class EVM {
 
       toast.success(
         <span>
-          View on {this.name}:{" "}
+          ✨ Transaction successfuly executed! You can view it{" "}
           <Link
             href={`${this.scanUrl}/tx/${transactionResponse.hash}`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            Transaction Details
+            here 
           </Link>
+          ✨
         </span>
       )
 

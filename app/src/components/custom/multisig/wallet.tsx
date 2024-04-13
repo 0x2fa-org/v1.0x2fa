@@ -9,41 +9,55 @@ import {
 } from "@/components/ui/select"
 import { FC, useState } from "react"
 import Wrapper from "../wrapper"
+import { Button } from "@/components/ui/button"
 
 const Wallet: FC = () => {
   const [selectedChain, setSelectedChain] = useState("eth")
+  const [selectedAction, setSelectedAction] = useState<string>()
+
+  const transact = async () => {
+    console.log("Transacting...")
+    console.log("Chain:", selectedChain)
+    console.log("Action:", selectedAction)
+  }
 
   return (
-    <Wrapper className="flex-row gap-2 grid grid-cols-5">
-      <div className="col-span-3">
-        <Select>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select an action..." />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Native</SelectLabel>
-              <SelectItem value="send_eth">Send ETH</SelectItem>
-              <SelectItem value="send_erc20">Send ERC20 Token</SelectItem>
-              <SelectLabel>Contract</SelectLabel>
-              <SelectItem value="mint">Mint an NFT</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+    <Wrapper className="gap-2">
+      <div className="grid grid-cols-5 gap-2">
+        <div className="col-span-3">
+          <Select onValueChange={(value) => setSelectedAction(value)}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select an action..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Native</SelectLabel>
+                <SelectItem value="send_eth">Send ETH</SelectItem>
+                <SelectItem value="send_erc20">Send ERC20 Token</SelectItem>
+                <SelectLabel>Contract</SelectLabel>
+                <SelectItem value="mint">Mint an NFT</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="col-span-2">
+          <Select
+            defaultValue={selectedChain}
+            onValueChange={(value) => setSelectedChain(value)}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select an action..." className="flex" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="eth">ETH</SelectItem>
+                <SelectItem value="bsc">BSC</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
-      <div className="col-span-2">
-        <Select defaultValue={selectedChain} onValueChange={(value) => setSelectedChain(value)}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select an action..." className="flex" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="eth">ETH</SelectItem>
-              <SelectItem value="bsc">BSC</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
+      <Button className="w-full" onClick={transact}>Send</Button>
     </Wrapper>
   )
 }

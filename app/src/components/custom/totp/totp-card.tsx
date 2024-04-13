@@ -7,7 +7,7 @@ import { FC, useEffect, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar'
 import TOTPInputs from './totp-inputs'
 import TOTPProgress from './totp-progress'
-import { getContract } from '@/utils/provider'
+import { getGaslessContract } from '@/utils/provider'
 import { toast } from 'sonner'
 
 interface Props {
@@ -35,9 +35,7 @@ const TOTPCard: FC<Props> = ({ title, avatarUrl, address, value }) => {
   }, [value]) // add value to the dependency array
 
   const deleteGroup = async () => {
-    const contract = await getContract()
-
-    // TODO: GASLESS
+    const contract = await getGaslessContract()
     await contract.leaveDomainGroup(title, address).then(() => {
       toast.success('✨ Domain has been deleted successfully! ✨')
     })

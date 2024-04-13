@@ -10,9 +10,10 @@ import { NextPage } from "next"
 import { Key, useEffect, useState } from "react"
 // @ts-ignore
 import { ApiSdk } from "@bandada/api-sdk"
-import { getContract } from "@/utils/provider"
+import { getGaslessContract } from "@/utils/provider"
 import { SAFE_GLOBAL_DOMAIN } from "@/constants"
 import { extractDomain } from "@/utils/format"
+import { toast } from "sonner"
 
 const Root: NextPage = () => {
   const [qrcodeResult, setQrcodeResult] = useState("")
@@ -36,10 +37,10 @@ const Root: NextPage = () => {
       // TODO: DETERMINISTIC MEMBERID/GROUP??
       await apiSdk.addMemberByInviteCode(inviteCode, address, groupId)
 
-      const contract = await getContract()
-
-      // TODO: GASLESS
-      await contract.joinDomainGroup(domain, address)
+      const contract = await getGaslessContract()
+      await contract.joinDomainGroup(domain, address).then(() => {
+        toast.success('✨ Domain has been added successfully! ✨')
+      })
     })()
   }, [qrcodeResult])
 

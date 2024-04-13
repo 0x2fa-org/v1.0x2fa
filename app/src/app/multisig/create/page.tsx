@@ -20,7 +20,7 @@ import { ApiSdk } from "@bandada/api-sdk"
 import React from "react"
 import Scan from "@/components/custom/multisig/scan"
 import { Invite } from "@/types/bandada"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 
 const CreateMultisig: FC = () => {
   const path = ["Create", "Scan", "Manage"]
@@ -54,10 +54,13 @@ const CreateMultisig: FC = () => {
 
   useEffect(() => {
     if (!invite) return
-    
+
     const apiSdk = new ApiSdk()
     const interval = setInterval(async () => {
-      const inv = await apiSdk.getInvite(invite.code as string, env.NEXT_PUBLIC_BANDADA_SDK_API_KEY)
+      const inv = await apiSdk.getInvite(
+        invite.code as string,
+        env.NEXT_PUBLIC_BANDADA_SDK_API_KEY
+      )
 
       if (inv.isRedeemed) {
         clearInterval(interval)
@@ -89,7 +92,11 @@ const CreateMultisig: FC = () => {
           ))}
         </BreadcrumbList>
       </Breadcrumb>
-      {currentPath === 'Create' ? <Create handleSubmit={handleCreate} /> : <Scan code={invite?.code ?? ''} /> }
+      {currentPath === "Create" ? (
+        <Create handleSubmit={handleCreate} />
+      ) : (
+        <Scan code={invite ? `${invite.code}:${invite.group.id}` : ""} />
+      )}
     </Wrapper>
   )
 }

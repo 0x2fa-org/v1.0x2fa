@@ -1,6 +1,8 @@
 import { task } from 'hardhat/config'
 import { save } from './utils/save'
 import { verify } from './utils/verify'
+import {ethers} from 'ethers'
+import { parseEther } from 'viem'
 
 task('deploy', '📰 Deploys a contract, saves the artifact and verifies it.')
   .addParam('contract', 'Name of the contract to deploy.', 'TOTP')

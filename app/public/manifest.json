@@ -1,7 +1,7 @@
 {
-  "id": "dethenticator",
-  "name": "Dethenticator",
-  "short_name": "Dethenticator",
+  "id": "0x2FA",
+  "name": "0x2FA",
+  "short_name": "0x2FA",
   "description": "The decentralized authenticator built with Oasis, Bandada and Near.",
   "icons": [
     {

@@ -7,7 +7,7 @@ import Providers from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Detheticator',
+  title: '0x2FA',
   description: 'The decentralized authenticator built with Oasis, Bandada and Near.',
 }
 

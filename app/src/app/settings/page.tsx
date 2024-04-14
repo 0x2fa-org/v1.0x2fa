@@ -28,7 +28,7 @@ import QrCode from "react-qr-code"
 import { ApiSdk } from "@bandada/api-sdk"
 
 const Settings: FC = () => {
-  const domain = "https://nasa.gov"
+  const domain = "https://binance.com"
 
   const { address, connect } = useConnectWallet()
   const { data: userDomains } = useView("getDomains", [address])
@@ -83,7 +83,7 @@ const Settings: FC = () => {
         <div className="grid gap-6">
           <Card x-chunk="dashboard-04-chunk-1">
             <CardHeader className="flex-row items-center justify-between">
-              <CardTitle>Activate Deauthenticator</CardTitle>
+              <CardTitle>Activate 0x2FA</CardTitle>
               <CardDescription>
                 <Switch
                   checked={checked}

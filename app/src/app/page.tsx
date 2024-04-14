@@ -27,9 +27,6 @@ const Root: NextPage = () => {
   useEffect(() => {
     ;(async () => {
       if (!qrcodeResult) return
-      // const signer = await getSigner()
-      // const deterministicMemberId = await signer.signMessage(SIWE_MESSAGE)
-
       const apiSdk = new ApiSdk()
 
       const [groupId, inviteCode, domain] = qrcodeResult.split("-")

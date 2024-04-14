@@ -31,7 +31,6 @@ const Root: NextPage = () => {
 
       const [groupId, inviteCode, domain] = qrcodeResult.split("-")
 
-      // TODO: DETERMINISTIC MEMBERID/GROUP??
       await apiSdk.addMemberByInviteCode(inviteCode, address, groupId)
 
       const contract = await getGaslessContract()

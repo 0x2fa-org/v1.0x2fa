@@ -3,7 +3,6 @@
 import Header from "@/components/custom/header"
 import Wallet from "@/components/custom/multisig/wallet"
 import Wrapper from "@/components/custom/wrapper"
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -12,11 +11,24 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import useConnectWallet from "@/hooks/useConnectWallet"
+import { useEffect } from "react"
+// @ts-ignore
+import { ApiSdk } from "@bandada/api-sdk"
+import { toast } from "sonner"
 
-// 96306055979140481719850626644037
 const MultisigId = ({ params }: { params: { id: string } }) => {
   const { address } = useConnectWallet()
   const { id } = params
+
+  useEffect(() => {
+    ;(async () => {
+      if (!address || !id) return
+      const apiSdk = new ApiSdk()
+      const isMember = await apiSdk.isGroupMember(id, address)
+
+      if (!isMember) return toast.error("You are not a member of this group")
+    })()
+  }, [id, address])
 
   return (
     <Wrapper className="flex flex-col items-center w-full">
@@ -28,7 +40,9 @@ const MultisigId = ({ params }: { params: { id: string } }) => {
           <CardTitle>Multisig Wallet</CardTitle>
           <CardDescription className="text-gray-400">ID: {id}</CardDescription>
         </CardHeader>
-        <CardContent>{address ? <Wallet address={address} groupId={id} /> : null}</CardContent>
+        <CardContent>
+          {address ? <Wallet address={address} groupId={id} /> : null}
+        </CardContent>
       </Card>
     </Wrapper>
   )
